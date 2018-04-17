@@ -15,14 +15,14 @@ export default class extends wepy.app {
   config = {
     pages: [
       'pages/home/home',  
+      'pages/personal/personal', 
+      'pages/login/login',
       'pages/personal/delivery', 
       'pages/login/forgot',    
       'pages/personal/base_edit',
       'pages/index/index',    
       'pages/personal/import_resume',
       'pages/personal/resume_list',
-      'pages/login/login',
-      'pages/personal/personal', 
       'pages/login/regist',
       'pages/personal/resume',
       'pages/personal/certificate',
@@ -50,12 +50,12 @@ export default class extends wepy.app {
       "backgroundColor": "#ffffff",
       list: [{ 
         'pagePath': 'pages/home/home',
-        'text': '主页',
+        'text': '智能推荐',
         'iconPath': 'images/icons/home.png',
         'selectedIconPath': 'images/icons/home_hl.png'
       }, {
         'pagePath': 'pages/corporation/corporation',
-        'text': '公司',
+        'text': '投递动态',
         'iconPath': 'images/icons/corp.png',
         'selectedIconPath': 'images/icons/corp_hl.png'
       }, {
@@ -82,7 +82,7 @@ export default class extends wepy.app {
   //当小程序初始化完成时，会触发 onLaunch（全局只触发一次）
   onLaunch(options) {
     let loginInfo =  wx.getStorageSync(LOGIN_INFO) || {}; 
-    this.getAccessToken(); 
+    // this.getAccessToken(); 
   }
 
   // sleep (s) {

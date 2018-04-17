@@ -7,7 +7,8 @@
             position: relative;
             .personal-info {
                 background-color: white;
-                margin: 12rpx 0;
+                margin: 22rpx 0;
+                margin-bottom: 0rpx;
                 display: flex;
                 flex-direction: row;
                 align-items: center;
@@ -41,6 +42,10 @@
                     .arrow_right {
                         width: 10rpx;
                         height: 16rpx;
+                    }
+                    .edit_icon {
+                        width: 68rpx;
+                        height: 68rpx;
                     }
                 }
             }
@@ -161,34 +166,41 @@
 <template>
   <view class="personal-container">
       <view class="personal-info">
-            <image mode="aspectFill" src="{{tempPortraitFilePath}}" wx:if="{{headimgStatus}}"></image>
+            <image mode="aspectFill" src="{{headimg}}" wx:if="{{headimgStatus}}"></image>
             <image mode="aspectFill" src="/images/icons/upload_head.png" wx:else="{{headimgStatus}}"></image>
             <view class="name-intro" wx:if="{{loginStatus}}" @tap.stop="goBaseEdit">
                 <view class="name-intro-bd">
                     <view class="name">{{username}}</view>
                     <view class="intro">{{jobname}}</view>
                 </view>
-                <image src="/images/icons/arrow_right.png" class="arrow_right"></image>
+                <image src="/images/icons/edit_icon.png" class="edit_icon"></image>
             </view>
             <view class="name-intro" wx:else="{{loginStatus}}">
                 <view class="intro2" bindtap="goLoginPage"><text>登录</text>  / <text>注册</text> </view>
             </view>
       </view>
+      <view class="my-function" style="margin-bottom: 22rpx;">
+          <view class="fun-line" bindtap="goResumeList" style="border: none;border-top: 1rpx solid #F1F1F1;">
+            <view class="img-title">
+                <text>剩余简历下载次数：</text>
+                <text style="color: #ff9e00;">168</text>
+            </view>
+        </view>
+    </view>
       <view class="my-function">
           <view class="fun-line" bindtap="goResumeList">
             <view class="img-title">
                 <image src="/images/icons/resume.png"></image>
-                <text>我的简历</text>
+                <text>职位管理</text>
             </view>
             <view class="percent-arrow">
-                <!-- <view class="percentage">{{percentage}}</view> -->
                 <image src="/images/icons/arrow_right.png"></image>
             </view>
         </view>
         <view class="fun-line" bindtap="goDeliveryPage">
             <view class="img-title">
-                <image src="/images/icons/delivery.png"></image>
-                <text>投递状态</text>
+                <image src="/images/icons/collection.png"></image>
+                <text>我的收藏</text>
             </view>
             <view class="percent-arrow">
                 <view></view>
@@ -197,8 +209,28 @@
         </view> 
         <view class="fun-line" bindtap="goCollectionPage">
             <view class="img-title">
-                <image src="/images/icons/collection.png"></image>
-                <text>我的收藏</text>
+                <image src="/images/icons/resume_download_icon.png"></image>
+                <text>已下载的简历</text>
+            </view>
+            <view class="percent-arrow">
+                <view></view>
+                <image src="/images/icons/arrow_right.png"></image>
+            </view>
+        </view>
+        <view class="fun-line" bindtap="goCollectionPage">
+            <view class="img-title">
+                <image src="/images/icons/homepage_setting_icon.png"></image>
+                <text>公司信息设置</text>
+            </view>
+            <view class="percent-arrow">
+                <view></view>
+                <image src="/images/icons/arrow_right.png"></image>
+            </view>
+        </view>
+        <view class="fun-line" bindtap="goCollectionPage">
+            <view class="img-title">
+                <image src="/images/icons/Switch_icon_geren.png"></image>
+                <text>切换至个人版</text>
             </view>
             <view class="percent-arrow">
                 <view></view>
@@ -267,13 +299,13 @@ export default class PersPage extends wepy.page {
         wx.getStorage({
             key: 'loginData',
             success: function(res) {
+                console.log(res)
                 that.loginStatus = true;
+                that.headimgStatus = true;
                 that.token = res.data.token;
                 that.tokenKey = res.data.tokenKey;
-                that.getPimg();
-                if(!res.data.data.companyname || !res.data.data.jobname){
-                    that.have = false;
-                }
+                that.headimg = res.data.headimg;
+                that.username = res.data.username;
                 that.$apply();
             },
             fail: function(res) {
@@ -365,36 +397,6 @@ export default class PersPage extends wepy.page {
             }
         })
         return json;
-    }
-
-    //获取个人信息
-    async getPimg() {
-        const that = this;
-        const json = await api.getPimg({
-            query: {
-                    head: {
-                        "transcode": "P0040",
-                        "type": "h"
-                    },
-                    data: {
-                        "tokenKey": that.tokenKey,
-                        "token": that.token,
-                    }
-                }
-        })
-        if(json.data.returnCode == 'AAAAAAA') {
-            if(json.data.data.headimg){
-                that.headimgStatus = true;
-            }else{
-                that.headimgStatus = false;
-            }
-            that.tempPortraitFilePath = json.data.data.headimg;
-            that.username = json.data.data.username;
-            that.jobname = json.data.data.jobname;
-            that.$apply();
-        }else{
-            tip.error(json.data.returnMsg);
-        }
     }
 }
 </script>

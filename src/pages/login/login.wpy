@@ -77,12 +77,12 @@
     .regist {
         display: flex;
         flex-direction: row;
-        justify-content: space-around;
+        justify-content: center;
         view {
-            color: #888;
-            font-size: 28rpx;
+            color: #656565;
+            font-size: 24rpx;
             text-align: center;
-            margin-top: 30rpx;
+            margin-top: 20rpx;
         }
     }
     .warnword {
@@ -90,6 +90,27 @@
         font-size: 24rpx;
         text-align: center;
         margin-top: 30rpx;
+    }
+    .switch {
+        display: flex;
+        flex-direction: row;
+        width: 226rpx;
+        position: fixed;
+        bottom: 120rpx;
+        left: 50%;
+        margin-left: -113rpx;
+        .icon {
+            width: 36rpx;
+            height: 36rpx;
+            background: #ff9e00;
+            border-radius: 50%;
+        }
+        .word {
+            font-size: 28rpx;
+            color: #333333;
+            margin-left: 20rpx;
+            text-decoration: underline;
+        }
     }
     
 </style>
@@ -104,26 +125,29 @@
             <image src="/images/icons/connect.png"></image>
             <view class="head-img">
                 <image src="/images/icons/logo.png"></image>
-                <view>51金融圈</view>
+                <view>51金融圈招聘版</view>
             </view>
         </view>
         <form bindsubmit="formSubmit">
             <view class="telephone">
-                <input placeholder-class="phcolor" type="text" name="username" placeholder="请输入手机号" >
+                <input placeholder-class="phcolor" type="text" name="username" placeholder="请输入手机号/邮箱" >
             </view>
             <view class="verifycode">
                 <input placeholder-class="phcolor" type="password" name="passwd" placeholder="请输入密码" >
             </view>
             <view class="enter">
-                <button class="save-btn" formType="submit">进入小程序</button>
+                <button class="save-btn" formType="submit">进入招聘版小程序</button>
             </view>
         </form>
         <view class="regist">
-            <view bindtap="goRegistPage">新用户注册</view>
-            <view bindtap="goForgotPage">忘记密码？</view>
+            <view>企业新用户注册请用电脑访问“www.51jrq.com”</view>
         </view>
         <view class="warnword">
             {{warnword}}
+        </view>
+        <view class="switch" bindtap="goMiniProgram">
+            <view class="icon"></view>
+            <view class="word">切换至个人版</view>
         </view>
     </view>
 </template>
@@ -190,13 +214,6 @@ export default class LoginPage extends wepy.page {
             }
             this.login(data).then(data=>{
                 if(data.data.returnCode == "AAAAAAA") {
-                    // 存储信息到本地
-                    let loginInfo =  wx.getStorageSync(LOGIN_INFO) || {};
-                    loginInfo.tokenKey = data.data.tokenKey;
-                    loginInfo.token = data.data.token;
-                    loginInfo.headimg = data.data.data.headimg;
-                    wx.setStorageSync(LOGIN_INFO, loginInfo);
-
                     wx.setStorage({
                         key:'loginData', 
                         data:data.data
@@ -205,7 +222,6 @@ export default class LoginPage extends wepy.page {
                     wx.switchTab({
                         url: '../personal/personal'
                     });
-
                 }else{
                     that.warnword = data.data.returnMsg;
                     that.$apply();
@@ -214,18 +230,18 @@ export default class LoginPage extends wepy.page {
             })
         },
 
-        // 跳转注册页面
-        goRegistPage(){
-            wx.navigateTo({
-                url: 'regist'
-            });
-        },
-        // 忘记密码页面
-        goForgotPage(){
-            wx.navigateTo({
-                url: 'forgot'
-            });
-        }
+        // 跳转个人版小程序
+        // goMiniProgram (){
+        //     appId: '',
+        //     path: 'pages/index/index?id=123',
+        //     extraData: {
+        //         foo: 'bar'
+        //     },
+        //     envVersion: 'develop',
+        //     success(res) {
+        //         // 打开成功
+        //     }
+        // }
     }
 
     //用户登录
@@ -233,7 +249,7 @@ export default class LoginPage extends wepy.page {
         const json = await api.loginIn({
         query: {
                 head: {
-                    "transcode": "D0001",
+                    "transcode": "H0001",
                     "type": "h"
                 },
                 data: data

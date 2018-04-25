@@ -70,7 +70,7 @@
             <view class="portrait-box" @tap.stop="changePortrait">
                 <image mode="aspectFill" wx:if="{{showPortraitStatus}}" class="icon-upload" src="{{tempPortraitFilePath}}"></image>
                 <image mode="aspectFill" wx:else="{{showPortraitStatus}}" class="icon-upload" src="/images/icons/upload_head.png"></image>
-                <text>点击更换头像（图片大小不宜超过1M）</text>
+                <text>点击更换头像</text>
             </view>
             <view class="list-container">
                 <view class="list-item">
@@ -95,22 +95,16 @@
                     </view>
                 </view>
                 <view class="list-item">
-                    <text class="label">居住城市</text>
-                    <picker name="livecityid" bindchange="bindLiveCityChange" value="{{index}}" range="{{city}}">
-                        <view class="picker">
-                            <text wx:if="{{livecityStatus}}">{{u_city ? u_city : "请选择"}}</text>
-                            <text wx:else>{{city[indexLiveCity]}}</text>
-                        </view>
-                    </picker>
+                    <text class="label">联系电话</text>
+                    <view class="input-area">
+                        <input placeholder-class="phcolor" type="text" name="phone" value="{{phone}}" placeholder="请填写" >
+                    </view>
                 </view>
                 <view class="list-item">
-                    <text class="label">工作年限</text>
-                    <picker name="workyears" bindchange="bindWorkYearsChange" value="{{index}}" range="{{workyears}}">
-                        <view class="picker">
-                            <text wx:if="{{workyearsStatus}}">{{u_workyears ? u_workyears : "请选择"}}</text>
-                            <text wx:else>{{workyears[indexWorkYearsStatus]}}</text>
-                        </view>
-                    </picker>
+                    <text class="label">我的职位</text>
+                    <view class="input-area">
+                        <input placeholder-class="phcolor" type="text" name="jobtitle" value="{{jobtitle}}" placeholder="请填写" >
+                    </view>
                 </view>
             </view>
             <view class="btn-box">
@@ -129,48 +123,29 @@ import {LOGIN_INFO} from '../../utils/constants';
 export default class BaseEdit extends wepy.page { 
   
    data = {
-      dictionaryList: ["DICT_BASE_SEX", "DICT_COMP_CITY", "DICT_WORK_YEARS"],
+      dictionaryList: ["DICT_BASE_SEX"],
       username: '',
       email: '',
+      phone: '',
+      jobtitle: '',
       u_sex: '',   
-      u_city: '', 
-      u_workyears: '',    
       sex: [],
-      city: [],
-      workyears: [],
       sexStatus: true,
-      livecityStatus: true,
-      workyearsStatus: true,
       showPortraitStatus: false,
       tempPortraitFilePath: '',
       indexSex: '',
-      indexLiveCity: '',
-      indexWorkYearsStatus: '',
       loginInfo: {},
    }
 
    onLoad(){
        this.loginInfo =  wx.getStorageSync(LOGIN_INFO) || {};
+       console.log(6666,this.loginInfo)
        this.getPimg();
        // 获取数据字典
        const that = this;
         that.dictionaryList.forEach((item,index) => {
             switch (item){
-                case "DICT_COMP_CITY":// 城市
-                    this.getDictData(item).then(json => {
-                        if (json.data.returnCode == "AAAAAAA") {
-                            let arr = []
-                            json.data.data.forEach((item,index)=>{
-                                arr.push(item.label)
-                            })
-                            that.city = arr;
-                            that.$apply();
-                        } else {
-                            tip.error(json.data.returnMsg);
-                        }
-                    })
-                    break;
-                case "DICT_BASE_SEX":// 城市
+                case "DICT_BASE_SEX":// 性别
                     this.getDictData(item).then(json => {
                         if (json.data.returnCode == "AAAAAAA") {
                             let arr = []
@@ -184,20 +159,6 @@ export default class BaseEdit extends wepy.page {
                         }
                     })
                     break;
-                case "DICT_WORK_YEARS":// 工作年限
-                    this.getDictData(item).then(json => {
-                        if (json.data.returnCode == "AAAAAAA") {
-                            let arr = []
-                            json.data.data.forEach((item,index)=>{
-                                arr.push(item.label)
-                            })
-                            that.workyears = arr;
-                            that.$apply();
-                        } else {
-                            tip.error(json.data.returnMsg);
-                        }
-                    })
-                    break;  
             }          
         });
    }
@@ -211,17 +172,12 @@ export default class BaseEdit extends wepy.page {
            this.sexStatus = false;
            this.indexSex = event.detail.value;
        },
-       bindLiveCityChange(event) {
-           this.livecityStatus = false;
-           this.indexLiveCity = event.detail.value;
-       },
-       bindWorkYearsChange(event) {
-           this.workyearsStatus = false;
-           this.indexWorkYearsStatus = event.detail.value;
-       },
        baseEditSubmit(e){
+           console.log(111111,e)
            this.username = e.detail.value.username;
            this.email = e.detail.value.email;
+           this.phone = e.detail.value.phone;
+           this.jobtitle = e.detail.value.jobtitle;
            this.editPersonalInfo().then(json => {
                if(json.data.returnCode == 'AAAAAAA') {
                     tip.success("操作成功");
@@ -266,13 +222,14 @@ export default class BaseEdit extends wepy.page {
     uploadImgFile(that, paths) {
         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
          wx.uploadFile({
-            url: `${api.apimall}/img/index`, //仅为示例，非真实的接口地址
+            url: `http://192.168.1.226:8080/mobile/img/index`, //仅为示例，非真实的接口地址
             filePath: paths,
             name: 'face',
             success: function(res){
                 //do something
                 if(JSON.parse(res.data).result) {
                     that.base64Img = JSON.parse(res.data).msg;
+                    console.log(111111,that.base64Img)
                     that.$apply();
                 } else {
                     console.log(res.data)
@@ -290,18 +247,18 @@ export default class BaseEdit extends wepy.page {
             title: '加载中',
         })
         const that = this;
-        const json = await api.changeHeadImg({
+        const json = await api.changeInfo({
             query: {
                 head:{
                     type: "h",
-                    transcode: "P0038"
+                    transcode: "H0003"
                 },
                 data:{
                     tokenKey: that.loginInfo.tokenKey,
                     token: that.loginInfo.token,
                     sex: that.sex[that.indexSex] || that.u_sex,
-                    city: that.city[that.indexLiveCity] || that.u_city,
-                    workinglife: that.workyears[that.indexWorkYearsStatus] || that.u_workinglife,
+                    phone: that.phone,
+                    jobtitle: that.jobtitle,
                     username: that.username,
                     email: that.email,
                     imgsrc: that.base64Img,
@@ -315,10 +272,10 @@ export default class BaseEdit extends wepy.page {
     //获取个人信息
     async getPimg() {
         const that = this;
-        const json = await api.getPimg({
+        const json = await api.getPersonalInfo({
             query: {
                     head: {
-                        "transcode": "P0040",
+                        "transcode": "H0013",
                         "type": "h"
                     },
                     data: {
@@ -337,14 +294,13 @@ export default class BaseEdit extends wepy.page {
             that.username = json.data.data.username;
             that.u_sex = json.data.data.sex;
             that.email = json.data.data.email;
-            that.u_city = json.data.data.city;
-            that.u_workyears = json.data.data.workinglife;
+            that.phone = json.data.data.phone;
+            that.jobtitle = json.data.data.jobtitle;
             that.$apply();
         }else{
             tip.error(json.data.returnMsg);
         }
     }
-
     //获取数据字典
     async getDictData(groupcode) {
         const json = await api.getDictData({
@@ -361,7 +317,6 @@ export default class BaseEdit extends wepy.page {
         })
         return json;
     }
-
 
 }
 </script>

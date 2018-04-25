@@ -188,7 +188,7 @@
         </view>
     </view>
       <view class="my-function">
-          <view class="fun-line" bindtap="goResumeList">
+          <view class="fun-line" bindtap="goPosiManage">
             <view class="img-title">
                 <image src="/images/icons/resume.png"></image>
                 <text>职位管理</text>
@@ -197,7 +197,7 @@
                 <image src="/images/icons/arrow_right.png"></image>
             </view>
         </view>
-        <view class="fun-line" bindtap="goDeliveryPage">
+        <view class="fun-line" bindtap="goCollectionPage">
             <view class="img-title">
                 <image src="/images/icons/collection.png"></image>
                 <text>我的收藏</text>
@@ -207,7 +207,7 @@
                 <image src="/images/icons/arrow_right.png"></image>
             </view>
         </view> 
-        <view class="fun-line" bindtap="goCollectionPage">
+        <view class="fun-line" bindtap="goDownloadPage">
             <view class="img-title">
                 <image src="/images/icons/resume_download_icon.png"></image>
                 <text>已下载的简历</text>
@@ -217,7 +217,7 @@
                 <image src="/images/icons/arrow_right.png"></image>
             </view>
         </view>
-        <view class="fun-line" bindtap="goCollectionPage">
+        <view class="fun-line" bindtap="goComInfo">
             <view class="img-title">
                 <image src="/images/icons/homepage_setting_icon.png"></image>
                 <text>公司信息设置</text>
@@ -319,32 +319,41 @@ export default class PersPage extends wepy.page {
       
     }
     methods = {
-        goResumeList () {// 跳转我的简历
+        goPosiManage () {// 跳转职位管理
             // 未登录跳转登录页
             utils.goLogin()
             if(this.loginStatus){
                 wx.navigateTo({
-                    url: `resume_list`
+                    url: `posi_manage`
                 })
             }
         },
 
-        // 跳转投递状态
-        goDeliveryPage () {
-            // 未登录跳转登录页
-            utils.goLogin()
-            if(this.loginStatus){
-                wx.navigateTo({
-                    url: `delivery`
-                })
-            }
-        },
-        goCollectionPage () {// 跳转我的收藏
+        
+        goCollectionPage () {// 跳转收藏的人才
             // 未登录跳转登录页
             utils.goLogin()
             if(this.loginStatus){
                 wx.navigateTo({
                     url: `collection`
+                })
+            }
+        },
+        goDownloadPage () {// 跳转已下载的简历
+            // 未登录跳转登录页
+            utils.goLogin()
+            if(this.loginStatus){
+                wx.navigateTo({
+                    url: `download`
+                })
+            }
+        },
+        goComInfo(){// 跳转公司主页设置
+            // 未登录跳转登录页
+            utils.goLogin()
+            if(this.loginStatus){
+                wx.navigateTo({
+                    url: `com_info`
                 })
             }
         },

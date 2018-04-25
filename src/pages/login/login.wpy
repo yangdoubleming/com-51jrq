@@ -175,17 +175,17 @@ export default class LoginPage extends wepy.page {
     onLoad () {
         const that = this;
         // 获取登录信息
-        wx.getStorage({
-            key: 'loginData',
-            success: function(res) {
-                if(res.data.returnCode=="AAAAAAA"){
-                    // 跳转到home页
-                    wx.switchTab({
-                        url: '../home/home'
-                    });
-                }
-            }
-        })
+        // wx.getStorage({
+        //     key: 'loginData',
+        //     success: function(res) {
+        //         if(res.data.returnCode=="AAAAAAA"){
+        //             // 跳转到home页
+        //             wx.switchTab({
+        //                 url: '../home/home'
+        //             });
+        //         }
+        //     }
+        // })
         // 获取用户信息
         wx.getUserInfo({
             success: function(res) {
@@ -214,6 +214,13 @@ export default class LoginPage extends wepy.page {
             }
             this.login(data).then(data=>{
                 if(data.data.returnCode == "AAAAAAA") {
+                    // 存储信息到本地
+                    let loginInfo =  wx.getStorageSync(LOGIN_INFO) || {};
+                    loginInfo.tokenKey = data.data.tokenKey;
+                    loginInfo.token = data.data.token;
+                    // loginInfo.headimg = data.data.data.headimg;
+                    wx.setStorageSync(LOGIN_INFO, loginInfo);
+
                     wx.setStorage({
                         key:'loginData', 
                         data:data.data

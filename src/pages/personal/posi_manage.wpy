@@ -32,95 +32,49 @@
                 margin-top: 30rpx;
             }
         }
-        .collectList {
+        .joblist {
             margin: 30rpx;
-            border-bottom: #f1f1f1 solid 1rpx;
-            .up {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-                .left {
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: flex-start;
-                    align-items: center;
-                    width: 65%;
-                    image {
-                        width: 72rpx;
-                        height: 72rpx;
-                        border-radius: 50%;
-                        background: cadetblue;
-                    }
-                    .intro {
-                        margin-left: 20rpx;
-                        .up {
-                            font-size: 32rpx;
-                            color: #353535;
-                        }
-                        .down {
-                            font-size: 24rpx;
-                            color: #A0A0A0;
-                        }
-                    }
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1rpx solid #f1f1f1;
+            .left {
+                .up {
+                    font-size: 32rpx;
+                    color: #333333;
                 }
-                .right {
-                    font-size: 28rpx;
-                    color: #FF9E00;
+                .down {
+                    font-size: 24rpx;
+                    color: #A0A0A0;
+                    margin-bottom: 30rpx;
                 }
             }
-            .mid {
-                color: #656565;
-                font-size: 28rpx;
-            }
-            .down {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-                .left {
-                    .up {
-                        font-size: 24rpx;
-                        color: #A0A0A0;
-                    }
-                    .down {
-                        font-size: 24rpx;
-                        color: #A0A0A0;
-                        margin-bottom: 30rpx;
-                    }
-                }
-                image {
-                    width: 44rpx;
-                    height: 42rpx;
-                }
+            .right {
+                color: #A0A0A0;
+                font-size: 32rpx;
             }
         }
+        
     }
 </style>
 
 <template>
     <view class="collection-container">
+        <view class="operate-container">
+            <view data-num="2" class="operate-btn {{_num==2?'operate-btn-active':''}}"  bindtap="menuClick">已发布</view>
+            <view data-num="1" class="operate-btn {{_num==1?'operate-btn-active':''}}" bindtap="menuClick">审核中</view>
+            <view data-num="4" class="operate-btn {{_num==4?'operate-btn-active':''}}" bindtap="menuClick">已下线</view>
+            <!-- <view data-num="4" class="operate-btn {{_num==4?'operate-btn-active':''}}" bindtap="menuClick">面试邀约</view> -->
+        </view>
         <view wx:if="{{collectStatus}}">
-            <repeat for="{{collectData}}" key="index" index="index" item="item"> 
-                <view class="collectList" bindtap="collectThis({{item.resumeid}})">
-                    <view class="up">
-                        <view class="left">
-                            <image src="{{item.headimg}}"></image>
-                            <view class="intro">
-                                <view class="up">{{item.username}}</view>
-                                <view class="down">24岁 | {{item.educationbg}} | {{item.workyears}} | {{item.sitecity}}</view>
-                            </view>
-                        </view>
-                        <view class="right">{{item.expectsalarycode}}</view>
+            <repeat for="{{collectData}}" key="index" index="index" item="item">
+                <view class="joblist">
+                    <view class="left">
+                        <view class="up">{{item.jobname}}</view>
+                        <view class="down">查看：{{item.seenum}} | 收藏：{{item.collectnum}} | 投递：{{item.likenum}}</view>
                     </view>
-                    <view class="mid">求职意向：{{item.functions}}</view>
-                    <view class="down">
-                        <view class="left">
-                            <view class="up">{{item.companynow}} - {{item.titlenow}}</view>
-                            <view class="down">2017.10-2018.04</view>
-                        </view>
-                        <image src="/images/icons/collection_button_dark_big.png"></image>
-                    </view>
+                    <view class="right">></view>
                 </view>
             </repeat>
         </view>
@@ -144,10 +98,10 @@ import BottomLoadMore from "../../components/bottomloadmore";
 
 export default class DeliveryPage extends wepy.page {
     config = {
-        navigationBarTitleText: '收藏的人才',
+        navigationBarTitleText: '投递状态',
     }
     data = {
-        _num: "1",
+        _num: "2",
         collectData: [],
         warningWord:"",
         collectStatus: false,
@@ -185,11 +139,7 @@ export default class DeliveryPage extends wepy.page {
         menuClick (e) {
             this._num = e.target.dataset.num;
             this.getCollectJob(this.token, this.tokenKey, this._num);
-        },
-        // 收藏
-        collectThis(resumeid,jobcollectionid) {
-            this.collectResume(resumeid,jobcollectionid);
-        },
+        }
 
     };
 
@@ -198,24 +148,23 @@ export default class DeliveryPage extends wepy.page {
             title: '加载中',
         })
         const that = this;
-        const json = await api.getCollectJob({
+        const json = await api.getJobList({
             query: {
                 head: {
-                    "transcode": "H0024",
+                    "transcode": "H0010",
                     "type": "h"
                 },
                 data: {
                     "token": token,
                     "tokenKey": tokenKey,
-                    "actiontype": "0",
+                    "type": status || "2",
                     "pageNo": currentPage || "1"
                 }
             }
         })
         if (json.data.returnCode == "AAAAAAA") {
-            console.log(1111,json)
             that.collectStatus = true;
-            that.collectData = json.data.data;
+            that.collectData = json.data.data.corpJob;
             that.totalPage =parseInt(json.data.datanum/ 10);
             if(that.collectData.length==0){
                 that.collectStatus = false;
@@ -224,39 +173,6 @@ export default class DeliveryPage extends wepy.page {
         } else {
             that.collectStatus = false;
             that.warningWord = json.data.returnMsg;
-        }
-        wx.hideLoading()
-        that.$apply();
-    }
-
-    async collectResume(resumeid, jobcollectionid) {
-        wx.showLoading({
-            title: '加载中',
-        })
-        const that = this;
-        const json = await api.collectResume({
-            query: {
-                head: {
-                    "transcode": "H0016",
-                    "type": "h"
-                },
-                data: {
-                    "token": this.token,
-                    "tokenKey": this.tokenKey,
-                    "jobcollectionid": '',
-                    "resumeid": resumeid
-                }
-            }
-        })
-        if (json.data.returnCode == "AAAAAAA") {
-           console.log(56565,json)
-        } else {
-            wx.showToast({
-                title: json.data.returnMsg,
-                icon: "none",
-                mask: true,
-                duration: 1500
-            });
         }
         wx.hideLoading()
         that.$apply();

@@ -1,5 +1,12 @@
 <style lang='scss'>
     .collection-container {
+        .plus {
+            position: fixed;
+            right: 100rpx;
+            bottom: 100rpx;
+            width: 96rpx;
+            height: 96rpx;
+        }
         .operate-container {
             padding: 0 32rpx;
             display: flex;
@@ -67,6 +74,7 @@
             <view data-num="4" class="operate-btn {{_num==4?'operate-btn-active':''}}" bindtap="menuClick">已下线</view>
             <!-- <view data-num="4" class="operate-btn {{_num==4?'operate-btn-active':''}}" bindtap="menuClick">面试邀约</view> -->
         </view>
+        <image class="plus" bindtap="releasePosi" src="/images/icons/release_button.png"></image>
         <view wx:if="{{collectStatus}}">
             <repeat for="{{collectData}}" key="index" index="index" item="item">
                 <view class="joblist">
@@ -139,6 +147,11 @@ export default class DeliveryPage extends wepy.page {
         menuClick (e) {
             this._num = e.target.dataset.num;
             this.getCollectJob(this.token, this.tokenKey, this._num);
+        },
+        releasePosi(){
+            wx.navigateTo({
+                url: `release_posi`
+            })
         }
 
     };

@@ -139,7 +139,6 @@ export default class BaseEdit extends wepy.page {
 
    onLoad(){
        this.loginInfo =  wx.getStorageSync(LOGIN_INFO) || {};
-       console.log(6666,this.loginInfo)
        this.getPimg();
        // 获取数据字典
        const that = this;

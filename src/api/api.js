@@ -2,17 +2,17 @@ import {
     wxRequest
 } from '../utils/wxrequest'; 
 
-const apimall = 'http://192.168.1.251:6688';
+// const apimall = 'http://192.168.1.251:6688';
 // const apimall = 'http://192.168.1.251:8089';
 // const apimall = 'http://192.168.1.226:8080/mobile';
-// const apimall = 'https://m.51jrq.com/mobile2'; 
+const apimall = 'https://m.51jrq.com'; 
 const apiGps = 'https://apis.map.qq.com/ws/geocoder/v1';
 
 // 用户登录
 const  loginIn = (params) => wxRequest(params, apimall + '/emobile/api/hr/login');
 
 // 获取数据字典数据
-const  getDictData = (params) => wxRequest(params, "http://192.168.1.251:8089" + '/mobile/api/dictionary');
+const  getDictData = (params) => wxRequest(params, apimall + '/mobile/api/dictionary');
 
 // 修改个人信息
 const  getPersonalInfo = (params) => wxRequest(params, apimall + '/emobile/api/hr/job');
@@ -28,6 +28,9 @@ const  getCollectJob = (params) => wxRequest(params, apimall + '/emobile/api/hr/
 
 //获取我的收藏及投递记录 
 const  collectResume = (params) => wxRequest(params, apimall + '/emobile/api/hr/userjob');
+
+//查询求职者信息列表 
+const  getPinfoList = (params) => wxRequest(params, apimall + '/emobile/api/hr/pinfo');
 
 // ====================================================================================================================
 
@@ -86,6 +89,7 @@ module.exports = {
     getJobList,
     getCollectJob,
     collectResume,
+    getPinfoList,
     // ================================
     apimall,
     getMobileHomeBanner,

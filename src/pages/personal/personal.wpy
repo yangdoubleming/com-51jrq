@@ -227,7 +227,7 @@
                 <image src="/images/icons/arrow_right.png"></image>
             </view>
         </view>
-        <view class="fun-line" bindtap="goCollectionPage">
+        <view class="fun-line" bindtap="">
             <view class="img-title">
                 <image src="/images/icons/Switch_icon_geren.png"></image>
                 <text>切换至个人版</text>
@@ -263,6 +263,9 @@ const utils = require('../../utils/utils');
 
 
 export default class PersPage extends wepy.page {
+    config = {
+        navigationBarTitleText: '我的',
+    }
     data = {
         // 简历完成百分比
         percentage: '0%',

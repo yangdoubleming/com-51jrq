@@ -29,27 +29,27 @@
   <form bindsubmit="formSubmit">
     <view class="biggest">
         <view class="block">
-            <view class="list_item">
+            <view class="list_item" bindtap="goComBaseInfo">
                 <view class="title">基本信息设置</view>
-                <view class="picker" bindchange="bindDateChange1">
+                <view class="picker">
                     >
                 </view>
             </view>
-            <view class="list_item">
+            <view class="list_item" bindtap="goComBaseInfo">
                 <view class="title">公司简介</view>
-                <view class="picker" bindchange="bindDateChange1">
+                <view class="picker">
                     >
                 </view>
             </view>
             <view class="list_item">
                 <view class="title">宣传视频</view>
-                <view class="picker" bindchange="bindDateChange1">
+                <view class="picker" bindtap="bindDateChange1">
                     >
                 </view>
             </view>
             <view class="list_item">
                 <view class="title">预览公司主页</view>
-                <view class="picker" bindchange="bindDateChange1">
+                <view class="picker" bindtap="bindDateChange1">
                     >
                 </view>
             </view>
@@ -77,7 +77,11 @@
     }
 
     methods = {
-       
+       goComBaseInfo () {// 基本信息设置
+            wx.navigateTo({
+                url: `com_baseinfo`
+            })
+        }
     }
   }
 </script>

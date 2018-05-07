@@ -65,13 +65,9 @@
                     }
                 }
                 .right {
-                    font-size: 28rpx;
-                    color: #FF9E00;
+                    font-size: 36rpx;
+                    color: #A0A0A0 ;
                 }
-            }
-            .mid {
-                color: #656565;
-                font-size: 28rpx;
             }
             .down {
                 display: flex;
@@ -79,19 +75,17 @@
                 justify-content: space-between;
                 align-items: center;
                 .left {
+                    display: flex;
+                    flex-direction: row;
+                    color: #656565;
+                    margin: 30rpx 0rpx;
                     .up {
                         font-size: 24rpx;
-                        color: #A0A0A0;
+                        margin-left: 20rpx;
                     }
                     .down {
                         font-size: 24rpx;
-                        color: #A0A0A0;
-                        margin-bottom: 30rpx;
                     }
-                }
-                image {
-                    width: 44rpx;
-                    height: 42rpx;
                 }
             }
         }
@@ -100,9 +94,15 @@
 
 <template>
     <view class="collection-container">
+        <view class="operate-container">
+            <view data-num="1" class="operate-btn {{_num==1?'operate-btn-active':''}}"  bindtap="menuClick">未处理</view>
+            <view data-num="2" class="operate-btn {{_num==2?'operate-btn-active':''}}" bindtap="menuClick">合适</view>
+            <view data-num="3" class="operate-btn {{_num==3?'operate-btn-active':''}}" bindtap="menuClick">面试邀约</view>
+            <view data-num="4" class="operate-btn {{_num==4?'operate-btn-active':''}}" bindtap="menuClick">不合适</view>
+        </view>
         <view wx:if="{{collectStatus}}">
             <repeat for="{{collectData}}" key="index" index="index" item="item"> 
-                <view class="collectList" bindtap="collectThis({{item.resumeid}})">
+                <view class="collectList" bindtap="goResumeView('9360226')">
                     <view class="up">
                         <view class="left">
                             <image src="{{item.headimg}}"></image>
@@ -111,15 +111,13 @@
                                 <view class="down">24岁 | {{item.educationbg}} | {{item.workyears}} | {{item.sitecity}}</view>
                             </view>
                         </view>
-                        <view class="right">{{item.expectsalarycode}}</view>
+                        <view class="right">></view>
                     </view>
-                    <view class="mid">求职意向：{{item.functions}}</view>
                     <view class="down">
                         <view class="left">
-                            <view class="up">{{item.companynow}} - {{item.titlenow}}</view>
-                            <view class="down">2017.10-2018.04</view>
+                            <view class="down">{{item.createdate}}</view>
+                            <view class="up">投递职位：金融理财师</view>
                         </view>
-                        <image src="/images/icons/like_hl.png"></image>
                     </view>
                 </view>
             </repeat>
@@ -144,11 +142,11 @@ import BottomLoadMore from "../../components/bottomloadmore";
 
 export default class DeliveryPage extends wepy.page {
     config = {
-        navigationBarTitleText: '已下载的简历',
+        navigationBarTitleText: '投递状态',
     }
     data = {
         _num: "1",
-        collectData: [],
+        collectData: [1,2,3],
         warningWord:"",
         collectStatus: false,
         showLoading: false,
@@ -186,10 +184,11 @@ export default class DeliveryPage extends wepy.page {
             this._num = e.target.dataset.num;
             this.getCollectJob(this.token, this.tokenKey, this._num);
         },
-        // 收藏
-        collectThis(resumeid,jobcollectionid) {
-            this.collectResume(resumeid,jobcollectionid);
-        },
+        goResumeView(resumeid){
+            wx.navigateTo({
+              url: `delivery_view?resumeid=${resumeid}&look=just`
+            })
+        }
 
     };
 
@@ -198,65 +197,35 @@ export default class DeliveryPage extends wepy.page {
             title: '加载中',
         })
         const that = this;
-        const json = await api.getCollectJob({
+        const json = await api.getPinfoList({
             query: {
                 head: {
-                    "transcode": "H0024",
+                    "transcode": "H0015",
                     "type": "h"
                 },
                 data: {
                     "token": token,
                     "tokenKey": tokenKey,
-                    "actiontype": "0",
-                    "pageNo": currentPage || "1"
+                    "querytype": status || "1",
+                    "page": currentPage || "1"
                 }
             }
         })
         if (json.data.returnCode == "AAAAAAA") {
-            console.log(1111,json)
+          console.log(json)
             that.collectStatus = true;
-            that.collectData = json.data.data;
+            that.collectData = json.data.list;
+            that.collectData.forEach(element => {
+                element.createdate = utils.date('Y-m-d',(element.createdate)/1000)
+            });
             that.totalPage =parseInt(json.data.datanum/ 10);
             if(that.collectData.length==0){
                 that.collectStatus = false;
                 that.warningWord = "暂未查到更多信息";
             }
         } else {
-            that.collectStatus = false;
+            that.collectStatus = true;
             that.warningWord = json.data.returnMsg;
-        }
-        wx.hideLoading()
-        that.$apply();
-    }
-
-    async collectResume(resumeid, jobcollectionid) {
-        wx.showLoading({
-            title: '加载中',
-        })
-        const that = this;
-        const json = await api.collectResume({
-            query: {
-                head: {
-                    "transcode": "H0016",
-                    "type": "h"
-                },
-                data: {
-                    "token": this.token,
-                    "tokenKey": this.tokenKey,
-                    "jobcollectionid": '',
-                    "resumeid": resumeid
-                }
-            }
-        })
-        if (json.data.returnCode == "AAAAAAA") {
-           console.log(56565,json)
-        } else {
-            wx.showToast({
-                title: json.data.returnMsg,
-                icon: "none",
-                mask: true,
-                duration: 1500
-            });
         }
         wx.hideLoading()
         that.$apply();

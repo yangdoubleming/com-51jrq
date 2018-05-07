@@ -14,11 +14,15 @@ import api from './api/api';
 export default class extends wepy.app {
   config = {
     pages: [
+      'pages/login/login',
       'pages/personal/personal', 
+      'pages/delivery/delivery',   
+      'pages/delivery/delivery_view',   
+      'pages/personal/release_posi', 
       'pages/personal/com_info',
+      'pages/personal/base_info', 
       'pages/personal/collection', 
       'pages/personal/posi_manage',
-      'pages/login/login',
       'pages/personal/base_edit',
       'pages/home/home',  
       'pages/login/forgot',    
@@ -30,12 +34,11 @@ export default class extends wepy.app {
       'pages/personal/project_exper', 
       'pages/personal/work_exper', 
       'pages/personal/job_want', 
-      'pages/personal/base_info', 
       'pages/search/search',      
       'pages/personal/download',
       'pages/home/homeview', 
-      'pages/corporation/corporation',   
-      'pages/corporation/corpview'
+      'pages/corporation/corpview',
+      'pages/personal/com_baseinfo'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -54,7 +57,7 @@ export default class extends wepy.app {
         'iconPath': 'images/icons/home.png',
         'selectedIconPath': 'images/icons/home_hl.png'
       }, {
-        'pagePath': 'pages/corporation/corporation',
+        'pagePath': 'pages/delivery/delivery',
         'text': '投递动态',
         'iconPath': 'images/icons/corp.png',
         'selectedIconPath': 'images/icons/corp_hl.png'

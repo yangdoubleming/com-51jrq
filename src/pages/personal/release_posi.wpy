@@ -1,0 +1,526 @@
+<style lang="scss">
+    .base-edit-container {
+        display: flex;
+        flex-direction: column;
+        .portrait-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40rpx 0 10rpx;
+            .icon-upload {
+                margin-bottom: 10rpx;
+                width: 140rpx;
+                height: 140rpx;
+            }
+            text {
+                font-size: 24rpx;
+                color: #a0a0a0;
+            }
+        }
+        .list-container {
+            display: flex;
+            flex-direction: column;
+            padding: 0 40rpx;
+            .list-item {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                font-size: 28rpx;
+                color: #888888;
+                height: 100rpx;
+                border-bottom: #f1f1f1 solid 2rpx;
+                .label {
+                    min-width: 120rpx;
+                    color: #353535;
+                }
+            }
+            .input-area {
+                input {
+                    text-align: right;
+                    color: #888888;
+                    width: 100%;
+                }
+                .phcolor {
+                    color: #888888;
+                    text-align: right;
+                }
+            }
+        }
+        .work-content {
+            height: 80rpx;
+            font-size: 28rpx;
+            line-height: 80rpx;
+            margin-left: 40rpx;
+            color: #353535;
+        }
+        .big {
+            background: white;
+            .section {
+                margin: auto 40rpx;
+                textarea {
+                    padding: 30rpx auto;
+                    width: 100%;
+                    font-size: 28rpx;
+                    color: #888888;
+                }
+            }
+        }
+        .btn-box {
+            margin: 50rpx auto;
+            width:586rpx;
+            height:80rpx;
+            .save-btn {
+                width:586rpx;
+                height:80rpx;
+                text-align:center;
+                font-size:36rpx;
+                color:#fff;
+                background-color:#ff9e00;
+            }
+        }
+    }
+</style>
+
+<template>
+  <view class="base-edit-container">
+      <form bindsubmit="formSubmit">
+            <view class="list-container">
+                <view class="list-item">
+                    <text class="label">职位名称</text>
+                    <view class="input-area">
+                        <input placeholder-class="phcolor" type="text" name="jobname" value="{{jobname}}" placeholder="请填写" >
+                    </view>
+                </view>
+                <view class="list-item">
+                    <text class="label">招聘人数</text>
+                    <view class="input-area">
+                        <input placeholder-class="phcolor" type="text" name="number" value="{{number}}" placeholder="请填写" >
+                    </view>
+                </view>
+                <view class="list-item">
+                    <text class="label">职业类型</text>
+                    <picker name="jobcategoryid" bindchange="bindPickerChange1" value="{{jobcategoryid[index1]}}" range="{{jobcategoryid}}">
+                        <view class="picker" wx:if="{{jobcategoryidStatus}}">
+                            {{a_jobcategoryid?a_jobcategoryid:'请选择'}}
+                        </view>
+                        <view class="picker" wx:else="{{jobcategoryidStatus}}">
+                            {{jobcategoryid[index1]}}
+                        </view>
+                    </picker>
+                </view>
+                <view class="list-item">
+                    <text class="label">职位福利</text>
+                    <picker name="weal" bindchange="bindPickerChange2" value="{{weal[index2]}}" range="{{weal}}">
+                        <view class="picker" wx:if="{{wealStatus}}">
+                            {{a_weal?a_weal:'请选择'}}
+                        </view>
+                        <view class="picker" wx:else="{{wealStatus}}">
+                            {{weal[index2]}}
+                        </view>
+                    </picker>
+                </view>
+                <view class="list-item">
+                    <text class="label">工作城市</text>
+                    <picker name="jobcity" bindchange="bindPickerChange3" value="{{jobcity[index3]}}" range="{{jobcity}}">
+                        <view class="picker" wx:if="{{jobcityStatus}}">
+                            {{a_jobcity?a_jobcity:'请选择'}}
+                        </view>
+                        <view class="picker" wx:else="{{scopeStatus}}">
+                            {{jobcity[index3]}}
+                        </view>
+                    </picker>
+                </view>
+                <view class="list-item">
+                    <text class="label">工作地点</text>
+                    <view class="input-area">
+                        <input placeholder-class="phcolor" type="text" name="jobaddress" value="{{jobaddress}}" placeholder="请填写" >
+                    </view>
+                </view>
+                <view class="list-item">
+                    <text class="label">工作性质</text>
+                    <picker name="jobtype" bindchange="bindPickerChange4" value="{{jobtype[index4]}}" range="{{jobtype}}">
+                        <view class="picker" wx:if="{{jobtypeStatus}}">
+                            {{a_jobtype?a_jobtype:'请选择'}}
+                        </view>
+                        <view class="picker" wx:else="{{jobtypeStatus}}">
+                            {{jobtype[index4]}}
+                        </view>
+                    </picker>
+                </view>
+                <view class="list-item">
+                    <text class="label">薪资范围</text>
+                    <picker name="salary" bindchange="bindPickerChange5" value="{{salary[index5]}}" range="{{salary}}">
+                        <view class="picker" wx:if="{{salaryStatus}}">
+                            {{a_salary?a_salary:'请选择'}}
+                        </view>
+                        <view class="picker" wx:else="{{salaryStatus}}">
+                            {{salary[index5]}}
+                        </view>
+                    </picker>
+                </view>
+                <view class="list-item">
+                    <text class="label">工作经验</text>
+                    <picker name="workyears" bindchange="bindPickerChange6" value="{{workyears[index6]}}" range="{{workyears}}">
+                        <view class="picker" wx:if="{{workyearsStatus}}">
+                            {{a_workyears?a_workyears:'请选择'}}
+                        </view>
+                        <view class="picker" wx:else="{{workyearsStatus}}">
+                            {{workyears[index6]}}
+                        </view>
+                    </picker>
+                </view>
+                <view class="list-item">
+                    <text class="label">学历要求</text>
+                    <picker name="ebid" bindchange="bindPickerChange7" value="{{ebid[index7]}}" range="{{ebid}}">
+                        <view class="picker" wx:if="{{ebidStatus}}">
+                            {{a_ebid?a_ebid:'请选择'}}
+                        </view>
+                        <view class="picker" wx:else="{{ebidStatus}}">
+                            {{ebid[index7]}}
+                        </view>
+                    </picker>
+                </view>
+            </view>
+            <view class="work-content">
+                职位描述
+            </view>
+            <view class="big">
+                <view class="section">
+                    <textarea maxlength="-1" name="jobdescription" value="{{jobdescription}}" placeholder="请输入公司介绍（200字以内）" placeholder-style="color:#888888;font-size:28rpx;"  />
+                </view>
+            </view>
+            <view class="btn-box">
+                <button class="save-btn" formType="submit">保存</button>
+            </view>
+      </form>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import api from '../../api/api';
+  import tip from '../../utils/tip';
+
+  export default class BaseInfo extends wepy.page {
+
+      config = {
+        navigationBarTitleText: '基本信息',
+      }
+
+      components = {
+      }
+      
+     data = {
+        jobname: '',              // 职位名称
+        jobcategoryid:[],         // 职业类型
+        weal:[],                  // 职位福利
+        jobcity:[],               // 工作城市
+        jobtype:[],               // 工作性质
+        salary: [],               // 薪资范围
+        ebid: [],                 // 学历
+        workyears: [],            // 工作年限
+        jobdescription:'',        // 职位描述
+        jobaddress:'',            // 工作地点
+        number: '' ,               // 招聘人数
+        index1: '',
+        index2: '',
+        index3: '',
+        index4: '',
+        index5: '',
+        index6: '',
+        index7: '',
+        // ============
+        a_jobtype:'',
+        jobtypeStatus:true,
+        a_weal:'',
+        wealStatus:true,
+        a_jobcity:'',
+        jobcityStatus:true,
+        a_jobcategoryid:'',
+        jobcategoryidStatus:true,
+        a_salary:'',
+        salaryStatus:true,
+        a_ebid:'',
+        ebidStatus:true,
+        a_workyears:'',
+        workyearsStatus:true,
+        token:'',
+        tokenKey:'',
+        jobid: ''
+    }
+
+      onLoad(options) { 
+        this.jobid = options.jobid; 
+        this.$apply();
+        // 获取登录信息
+        const that = this;
+        wx.getStorage({
+            key: 'loginData',
+            success: function(res) {
+                that.token = res.data.token;
+                that.tokenKey = res.data.tokenKey;
+                //获取简历基本信息
+                that.getResumeInfo(options.jobid,res.data.token,res.data.tokenKey).then(json => {
+                    if (json.data.returnCode == "AAAAAAA") {
+                        var baseInfo = JSON.parse(json.data.data);
+                        that.baseInfo = {
+                            "username": baseInfo.username,
+                            "resumename": baseInfo.newresumename,
+                            "borndate": baseInfo.borndate,
+                            "address": baseInfo.address,
+                            "workyears": baseInfo.workyears,
+                            "jobstatus": baseInfo.jobstatus,
+                            "livecityid": baseInfo.livecityid,
+                            "marital": baseInfo.marital,
+                            "telephone": baseInfo.telephone,
+                            "email": baseInfo.email,
+                            "sex": baseInfo.sex
+                        }
+                        that.username = baseInfo.username;
+                        that.resumename = baseInfo.newresumename;
+                        that.borndate = baseInfo.borndate;
+                        that.address = baseInfo.address;
+                        that.a_workyears = baseInfo.workyears;
+                        that.a_jobstatus = baseInfo.jobstatus;
+                        that.livecity = baseInfo.livecityid;
+                        that.a_marital = baseInfo.marital;
+                        that.a_sex = baseInfo.sex;
+                        that.telephone = baseInfo.telephone;
+                        that.email = baseInfo.email;
+                        that.$apply();
+                    } else {
+                        tip.error(json.returnMsg);
+                    }
+                })
+            } 
+        })
+            // 获取数据字典
+            const arr = ["DICT_COMP_INDUSTRY","DICT_JOB_JOBTYPE","DICT_JOB_WEAL","DICT_COMP_CITY","DICT_JOB_SALARY","DICT_WORK_YEARS","DICT_JOB_EDU"]
+            arr.forEach((item,index) => {
+            switch (item)
+            {
+            case "DICT_COMP_CITY":// 工作地点
+                this.getDict(item).then(json => {
+                if (json.data.returnCode == "AAAAAAA") {
+                    var arr = []
+                    json.data.data.forEach((item,index)=>{
+                        arr.push(item.label)
+                    })
+                    that.jobcity = arr;
+                    that.$apply();
+                } else {
+                    tip.error(json.returnMsg);
+                }
+                })
+                break;
+            case "DICT_COMP_INDUSTRY":// 职业类型
+                this.getDict(item).then(json => {
+                if (json.data.returnCode == "AAAAAAA") {
+                    var arr = []
+                    json.data.data.forEach((item,index)=>{
+                        arr.push(item.label)
+                    })
+                    that.jobcategoryid = arr;
+                    that.$apply();
+                } else {
+                    tip.error(json.returnMsg);
+                }
+                })
+                break;
+            case "DICT_JOB_WEAL":// 职位福利
+                this.getDict(item).then(json => {
+                if (json.data.returnCode == "AAAAAAA") {
+                    var arr = []
+                    json.data.data.forEach((item,index)=>{
+                        arr.push(item.label)
+                    })
+                    that.weal = arr;
+                    that.$apply();
+                } else {
+                    tip.error(json.returnMsg);
+                }
+                })
+                break;
+            case "DICT_JOB_JOBTYPE":// 工作性质
+                this.getDict(item).then(json => {
+                if (json.data.returnCode == "AAAAAAA") {
+                    var arr = []
+                    json.data.data.forEach((item,index)=>{
+                        arr.push(item.label)
+                    })
+                    that.jobtype = arr;
+                    that.$apply();
+                } else {
+                    tip.error(json.returnMsg);
+                }
+                })
+                break;
+            case "DICT_JOB_SALARY":// 薪资范围
+                this.getDict(item).then(json => {
+                if (json.data.returnCode == "AAAAAAA") {
+                    var arr = []
+                    json.data.data.forEach((item,index)=>{
+                        arr.push(item.label)
+                    })
+                    that.salary = arr;
+                    that.$apply();
+                } else {
+                    tip.error(json.returnMsg);
+                }
+                })
+                break;
+            case "DICT_WORK_YEARS":// 工作经验
+                this.getDict(item).then(json => {
+                if (json.data.returnCode == "AAAAAAA") {
+                    var arr = []
+                    json.data.data.forEach((item,index)=>{
+                        arr.push(item.label)
+                    })
+                    that.workyears = arr;
+                    that.$apply();
+                } else {
+                    tip.error(json.returnMsg);
+                }
+                })
+                break;
+            case "DICT_JOB_EDU":// 学历
+                this.getDict(item).then(json => {
+                if (json.data.returnCode == "AAAAAAA") {
+                    var arr = []
+                    json.data.data.forEach((item,index)=>{
+                        arr.push(item.label)
+                    })
+                    that.ebid = arr;
+                    that.$apply();
+                } else {
+                    tip.error(json.returnMsg);
+                }
+                })
+                break;
+            }
+        });
+      }
+      methods = {
+        // 提交表单--基本信息编辑新增
+        formSubmit: function(e) {
+            wx.showLoading({
+                title: '加载中',
+            })
+            var obj2 = {
+                "token": this.token,
+                "tokenKey": this.tokenKey,
+                "jobid": this.jobid
+            }
+            if(!obj2.jobid){
+                delete obj2['jobid']
+            }
+            const that = this;
+            this.changeBaseInfo(e.detail.value,obj2).then(data=>{
+                if(data.data && data.data.returnCode == "AAAAAAA") {
+                    wx.redirectTo({
+                        url: `posi_manage`
+                    })
+                }else{
+                    tip.error(data.data.returnMsg);
+                }
+                wx.hideLoading()
+            })
+        },
+        bindPickerChange1: function(e) {
+            this.jobcategoryidStatus = false ;
+            this.index1 = e.detail.value;
+            this.$apply();
+        },
+        bindPickerChange2: function(e) {
+            this.wealStatus = false ;
+            this.index2 = e.detail.value;
+            this.$apply();
+        },
+        bindPickerChange3: function(e) {
+            this.jobcityStatus = false;
+            this.index3 = e.detail.value;
+            this.$apply();
+        },
+        bindPickerChange4: function(e) {
+            this.jobtypeStatus = false;
+            this.index4 = e.detail.value;
+            this.$apply();
+        },
+        bindPickerChange5: function(e) {
+            this.salaryStatus = false ;
+            this.index5 = e.detail.value;
+            this.$apply();
+        },
+        bindPickerChange6: function(e) {
+            this.workyearsStatus = false;
+            this.index6 = e.detail.value;
+            this.$apply();
+        },
+        bindPickerChange7: function(e) {
+            this.ebidStatus = false;
+            this.index7 = e.detail.value;
+            this.$apply();
+        }
+        
+    };
+    
+    //获取数据字典
+    async getDict(code) {
+        const json = await api.getDictData({
+        query: {
+                head: {
+                    "transcode": "DC001",
+                    "type": "h"
+                },
+                data: {
+                    "groupcode": code,
+                    "selAll": "true"
+                }
+            }
+        })
+        return json;
+    }
+
+    //获取简历基本信息
+    async getResumeInfo(jobid, token, tokenKey) {
+        const json = await api.getResumeInfo({
+        query: {
+                head: {
+                    "transcode": "M0003",
+                    "type": "h"
+                },
+                data: {
+                    "token": token,
+                    "tokenKey": tokenKey,
+                    "jobid": jobid
+                }
+            }
+        })
+        return json;
+    }
+    //修改表单数据
+    async changeBaseInfo(obj, obj2) {
+        var data = obj2
+        for (var Key in obj){
+            if(!obj[Key]){
+                delete obj[Key]
+            }
+        }
+        let resultObj = Object.assign(data, this.baseInfo, obj);
+        const json = await api.getPersonalInfo({
+        query: {
+                head: {
+                    "transcode": "H0012",
+                    "type": "h"
+                },
+                data: resultObj
+            }
+        })
+        return json;
+    }
+
+  }
+</script>
+
+

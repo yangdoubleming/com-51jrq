@@ -1,128 +1,290 @@
 <style lang='scss'>
     .collection-container {
-        .operate-container {
-            padding: 0 32rpx;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-around;
-            border-bottom: 2rpx solid #e1e1e1;
-            .operate-btn {
-                font-size:28rpx;
-                padding: 30rpx;
-            }
-            .operate-btn-active {
-                border-bottom: 6rpx solid #FF9E00;
-                color: #FF9E00;
-            }
-        }
-        .no-collect-container {
-            padding: 0 32rpx;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            height: 800rpx;
-            align-items: center;
-            image {
-                width: 176rpx;
-                height: 220rpx;
-            }
-            view {
-                color: #A0A0A0;
-                font-size: 28rpx;
-                margin-top: 30rpx;
-            }
-        }
-        .collectList {
-            margin: 30rpx;
-            border-bottom: #f1f1f1 solid 1rpx;
-            .up {
+        .big-box {
+            position: relative;
+            .operate-container {
+                padding: 0 32rpx;
                 display: flex;
                 flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-                .left {
+                justify-content: space-around;
+                border-bottom: 2rpx solid #e1e1e1;
+                .operate-btn {
+                    font-size:28rpx;
+                    padding: 30rpx;
+                }
+                .operate-btn-active {
+                    border-bottom: 6rpx solid #FF9E00;
+                    color: #FF9E00;
+                }
+            }
+            .collectList {
+                margin: 30rpx;
+                border-bottom: #f1f1f1 solid 1rpx;
+                .up {
                     display: flex;
                     flex-direction: row;
-                    justify-content: flex-start;
+                    justify-content: space-between;
                     align-items: center;
-                    width: 65%;
-                    image {
-                        width: 72rpx;
-                        height: 72rpx;
-                        border-radius: 50%;
-                        background: cadetblue;
+                    .left {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: flex-start;
+                        align-items: center;
+                        width: 65%;
+                        image {
+                            width: 72rpx;
+                            height: 72rpx;
+                            border-radius: 50%;
+                            background: cadetblue;
+                        }
+                        .intro {
+                            margin-left: 20rpx;
+                            .up {
+                                font-size: 32rpx;
+                                color: #353535;
+                            }
+                            .down {
+                                font-size: 24rpx;
+                                color: #A0A0A0;
+                            }
+                        }
                     }
-                    .intro {
-                        margin-left: 20rpx;
+                    .right {
+                        font-size: 28rpx;
+                        color: #FF9E00;
+                    }
+                }
+                .mid {
+                    color: #656565;
+                    font-size: 28rpx;
+                }
+                .down {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    align-items: center;
+                    .left {
                         .up {
-                            font-size: 32rpx;
-                            color: #353535;
+                            font-size: 24rpx;
+                            color: #A0A0A0;
                         }
                         .down {
                             font-size: 24rpx;
                             color: #A0A0A0;
+                            margin-bottom: 30rpx;
+                        }
+                    }
+                    image {
+                        width: 44rpx;
+                        height: 42rpx;
+                    }
+                }
+            }
+            .title-box {
+                position: relative;
+                z-index: 7;
+                border-bottom: 1rpx solid #E1E1E1;
+                background: white;
+                .title {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin: auto 30rpx;
+                    .word {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        color: #333333;
+                        font-size: 32rpx;
+                        font-weight: bold;
+                        text {
+                            color: #FF9E00;
+                            font-weight: normal;
+                            font-size: 28rpx;
+                            margin: auto 16rpx;
+                        }
+                        .circle {
+                            width: 30rpx;
+                            height: 30rpx;
+                            border-radius: 50%;
+                            border:1rpx solid #BFBFBF;
+                            position: relative;
+                            .point {
+                                width: 16rpx;
+                                height: 16rpx;
+                                border-radius: 50%;
+                                background: #F16049;
+                                position: absolute;
+                                top: -3rpx;
+                                right: -6rpx;
+                            }
+                            image {
+                                height: 10rpx;
+                                width: 16rpx;
+                                position: absolute;
+                                top: 10rpx;
+                                left: 6rpx;
+                            }
+                        }
+                        
+                    }
+                    .right {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        view {
+                            font-size: 50rpx;
+                            color: #E1E1E1;
+                            margin-bottom: 8rpx;
+                            margin-right: 8rpx;
+                        }
+                        image {
+                            height: 76rpx;
+                            width: 76rpx;
                         }
                     }
                 }
-                .right {
-                    font-size: 28rpx;
-                    color: #FF9E00;
+            }
+            .job-box {
+                position: relative;
+                z-index: 8;
+                background: white;
+                .job-list {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin: auto 30rpx;
+                    padding: 40rpx 0;
+                    border-bottom: #f1f1f1 solid 1rpx;
+                    .left {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        image {
+                            width: 40rpx;
+                            height: 40rpx;
+                            margin-right: 15rpx;
+                        }
+                        .jobname {
+                            font-size: 32rpx;
+                            color: #656565;
+                            margin-right: 10rpx;
+                        }
+                        .count {
+                            font-size: 28rpx;
+                            color: #FF9E00;
+                            margin-right: 10rpx;
+                        }
+                        .point {
+                            width: 16rpx;
+                            height: 16rpx;
+                            border-radius: 50%;
+                            background: #F16049;
+                        }
+                    }
+                    .right {
+                        font-size: 28rpx;
+                        color: #FF9E00;
+                        font-weight: bold;
+                    }
                 }
             }
-            .mid {
-                color: #656565;
-                font-size: 28rpx;
-            }
-            .down {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-                .left {
-                    .up {
-                        font-size: 24rpx;
-                        color: #A0A0A0;
-                    }
-                    .down {
-                        font-size: 24rpx;
-                        color: #A0A0A0;
-                        margin-bottom: 30rpx;
-                    }
-                }
-                image {
-                    width: 44rpx;
-                    height: 42rpx;
-                }
+            .shadow {
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                left: 0;
+                top: 0;
+                background: black;
+                opacity: 0.5;
+                z-index: 6;
             }
         }
+        .no-collect-container {
+                padding: 0 32rpx;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                height: 800rpx;
+                align-items: center;
+                image {
+                    width: 176rpx;
+                    height: 220rpx;
+                }
+                view {
+                    color: #A0A0A0;
+                    font-size: 28rpx;
+                    margin-top: 30rpx;
+                }
+            }
     }
 </style>
 
 <template>
     <view class="collection-container">
         <view wx:if="{{collectStatus}}">
-            <repeat for="{{collectData}}" key="index" index="index" item="item"> 
-                <view class="collectList" bindtap="collectThis({{item.resumeid}})">
-                    <view class="up">
-                        <view class="left">
-                            <image src="{{item.headimg}}"></image>
-                            <view class="intro">
-                                <view class="up">{{item.username}}</view>
-                                <view class="down">24岁 | {{item.educationbg}} | {{item.workyears}} | {{item.sitecity}}</view>
+            <view class="big-box">
+                <view class="title-box">
+                    <view class="title">
+                        <view class="word">人力资源总监
+                            <text>(3946)</text>
+                            <view class="circle" bindtap="fold">
+                                <image wx:if="{{showStatus}}" src="/images/icons/arrow-up.png"></image>
+                                <image wx:else="{{showStatus}}" src="/images/icons/arrow-down.png"></image>
+                                <view class="point"></view>
                             </view>
                         </view>
-                        <view class="right">{{item.expectsalarycode}}</view>
-                    </view>
-                    <view class="mid">求职意向：{{item.functions}}</view>
-                    <view class="down">
-                        <view class="left">
-                            <view class="up">{{item.companynow}} - {{item.titlenow}}</view>
-                            <view class="down">2017.10-2018.04</view>
+                        <view class="right">
+                            <view>|</view>
+                            <image src="/images/icons/search_button.png"></image>
                         </view>
-                        <image src="/images/icons/like_hl.png"></image>
                     </view>
                 </view>
-            </repeat>
+                <view class="job-box" wx:if="{{showStatus}}">
+                    <view class="job-list">
+                        <view class="left">
+                            <image src="/images/icons/no-sel.png"></image>
+                            <view class="jobname">财务总监</view>
+                            <view class="count">(275)</view>
+                            <view class="point"></view>
+                        </view>
+                        <view class="right">20-30k</view>
+                    </view>
+                    <view class="job-list">
+                        <view class="left">
+                            <image src="/images/icons/sel.png"></image>
+                            <view class="jobname">财务总监</view>
+                            <view class="count">(275)</view>
+                            <view class="point"></view>
+                        </view>
+                        <view class="right">20-30k</view>
+                    </view>
+                </view>
+                <view class="shadow" wx:if="{{showStatus}}"></view>
+                <repeat for="{{collectData}}" key="index" index="index" item="item"> 
+                    <view class="collectList" bindtap="collectThis({{item.resumeid}})">
+                        <view class="up">
+                            <view class="left">
+                                <image src="{{item.headimg}}"></image>
+                                <view class="intro">
+                                    <view class="up">{{item.username}}</view>
+                                    <view class="down">24岁 | 本科 | {{item.workyears}} | {{item.sitecity}}</view>
+                                </view>
+                            </view>
+                            <view class="right">{{item.expectsalarycode}}</view>
+                        </view>
+                        <view class="down">
+                            <view class="left">
+                                <view class="up">{{item.companynow}} - {{item.titlenow}}</view>
+                                <view class="down">2017.10-2018.04</view>
+                            </view>
+                            <image src="/images/icons/like.png"></image>
+                        </view>
+                    </view>
+                </repeat>
+            </view>
         </view>
         <view class="no-collect-container" wx:else="{{collectStatus}}">
             <image src="/images/icons/no_delivery.png"></image>
@@ -144,7 +306,7 @@ import BottomLoadMore from "../../components/bottomloadmore";
 
 export default class DeliveryPage extends wepy.page {
     config = {
-        navigationBarTitleText: '收藏的人才',
+        navigationBarTitleText: '智能推荐',
     }
     data = {
         _num: "1",
@@ -154,6 +316,7 @@ export default class DeliveryPage extends wepy.page {
         showLoading: false,
         totalPage: 0,    //总数
         currentPage: 1,
+        showStatus: false,
         token:'',
         tokenKey:''
     }
@@ -190,6 +353,10 @@ export default class DeliveryPage extends wepy.page {
         collectThis(resumeid,jobcollectionid) {
             this.collectResume(resumeid,jobcollectionid);
         },
+        // 展开-收起
+        fold() {
+            this.showStatus = !this.showStatus;
+        }
 
     };
 
